@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../routes/app_pages.dart';
 import '../controllers/splash_controller.dart';
 
 class SplashView extends GetView<SplashController> {
@@ -61,7 +62,7 @@ class SplashView extends GetView<SplashController> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               InkWell(
-                onTap: null,
+                onTap: () => Get.offNamed(Routes.AUTH),
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 100,
