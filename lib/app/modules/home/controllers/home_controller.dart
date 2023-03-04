@@ -1,23 +1,30 @@
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
-class HomeController extends GetxController {
-  //TODO: Implement HomeController
+import '../../../data/meal_services.dart';
+import '../models/meals_models.dart';
 
-  final count = 0.obs;
+class HomeController extends GetxController {
+  final dio = Dio();
+  RxBool isLoading = false.obs;
+  RxList<Meal> listMeal = <Meal>[].obs;
+  final mealService = MealService();
+
   @override
   void onInit() {
     super.onInit();
+    getListMeals();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  getListMeals() async {
+    isLoading(true);
+    try {
+      var response = await mealService.getMeals();
+      listMeal.addAll(response.meals);
+      isLoading(false);
+    } catch (e) {
+      isLoading(false);
+      Get.snackbar('Error', e.toString());
+    }
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

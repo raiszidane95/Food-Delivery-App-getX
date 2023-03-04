@@ -3,13 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Ctabutton extends StatelessWidget {
+  final String textTitle;
+  final String routeDestination;
   const Ctabutton({
     Key? key,
     required this.textTitle,
     required this.routeDestination,
   }) : super(key: key);
-  final String textTitle;
-  final String routeDestination;
+
+  // late final String textTitle;
+  // late final String routeDestination;
+
+  // const Ctabutton({super.key, required this.textTitle, required this.routeDestination});
 
   @override
   Widget build(BuildContext context) {
