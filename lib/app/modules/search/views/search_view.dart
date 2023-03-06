@@ -1,19 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../routes/app_pages.dart';
+import '../controllers/search_controller.dart';
 import '../widget/list_card_food_widget.dart';
 
-class SearchView extends StatelessWidget {
-  SearchView({super.key});
-  final foodList = [
-    {'name': 'Veggoe Tomatto Mix', 'icon': 'assets/image/food1.png'},
-    {'name': 'Egg and Cucumber..', 'icon': 'assets/image/food1.png'},
-    {'name': 'Fried Chicken m.', 'icon': 'assets/image/food1.png'},
-    {'name': 'Moi-moi and Ekpa', 'icon': 'assets/image/food1.png'},
-    {'name': 'Bakpau', 'icon': 'assets/image/food1.png'},
-    {'name': 'chuankie', 'icon': 'assets/image/food1.png'},
-  ];
+class SearchView extends GetView<SearchController> {
+  final SearchController foodController = Get.put(SearchController());
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +14,7 @@ class SearchView extends StatelessWidget {
         elevation: 0,
         leading: GestureDetector(
           onTap: () {
-            Get.offAllNamed(Routes.HOME);
+            Get.back();
           },
           child: Icon(
             Icons.arrow_back_ios,
@@ -33,49 +25,60 @@ class SearchView extends StatelessWidget {
         title: Container(
           padding: const EdgeInsets.all(8),
           child: TextFormField(
-            decoration:
-                const InputDecoration(border: InputBorder.none, hintText: ""),
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+            ),
+            onChanged: (value) {
+              foodController.onTextChanged(value);
+            },
             // focusNode: FocusNode().,
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 30,
-              margin: const EdgeInsets.only(top: 30.0),
-              child: const Center(
-                child: Text(
-                  "Found 6 Result",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold),
+      body: Obx(
+        () => SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: 30,
+                margin: const EdgeInsets.only(top: 30.0),
+                child: Center(
+                  child: Text(
+                    "Found " +
+                        foodController.searchList.length.toString() +
+                        " Result",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(
-                left: 45.0,
-                top: 120.0,
+              Container(
+                margin: const EdgeInsets.only(
+                  left: 45.0,
+                  top: 160.0,
+                ),
+                child: GridView.count(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 50,
+                  children: [
+                    ...foodController.searchList.map(
+                      (item) {
+                        return ListCardFood(
+                          imageUrl: item.strMealThumb.toString(),
+                          text: item.strMeal.toString(),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
-              child: GridView.count(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                crossAxisCount: 2,
-                mainAxisSpacing: 50,
-                children: [
-                  ...foodList.map((e) {
-                    return ListCardFood(
-                        image: "assets/image/food1.png",
-                        text: "Vegie tomato mix");
-                  }),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

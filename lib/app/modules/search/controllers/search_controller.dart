@@ -1,20 +1,44 @@
 import 'package:get/get.dart';
 
-class SearchController extends GetxController {
-  //TODO: Implement SearchController
+import '../../../data/meal_services.dart';
+import '../../detail_product/models/detail_meals_model.dart';
 
-  final count = 0.obs;
+class SearchController extends GetxController {
+  RxBool isLoading = false.obs;
+  RxList<Meal> listFood = <Meal>[].obs;
+  final mealService = MealService();
+  var searchList = <Meal>[].obs;
+
   @override
   void onInit() {
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  getListFood() async {
+    isLoading(true);
+    try {
+      var response = await mealService.getListFood();
+      listFood.addAll(response.meals as Iterable<Meal>);
+      isLoading(false);
+    } catch (e) {
+      isLoading(false);
+      Get.snackbar('Error', e.toString());
+    }
   }
 
-  @override
-  void onClose() {}
-  void increment() => count.value++;
+  void onTextChanged(String text) {
+    searchList.clear();
+    if (text.isEmpty) {
+      listFood.forEach((element) {
+        searchList.add(element);
+      });
+    } else {
+      listFood.forEach((element) {
+        if (element.strMeal!.toLowerCase().contains(text)) {
+          searchList.add(element);
+        }
+        searchList.refresh();
+      });
+    }
+  }
 }

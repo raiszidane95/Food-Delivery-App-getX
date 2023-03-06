@@ -176,6 +176,7 @@ class HomeView extends GetView<HomeController> {
                                                       padding: EdgeInsets.only(
                                                           right: 20),
                                                       child: FoodCardWidget(
+                                                          id: item.idMeal,
                                                           image:
                                                               item.strMealThumb,
                                                           text: item.strMeal),

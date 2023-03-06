@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../routes/app_pages.dart';
 
 class FoodCardWidget extends StatelessWidget {
+  final String image, text;
+  final String? id;
+
   const FoodCardWidget({
     Key? key,
     required this.image,
     required this.text,
+    this.id,
   }) : super(key: key);
-  final String image, text;
 
   @override
   Widget build(BuildContext context) {
@@ -15,26 +21,31 @@ class FoodCardWidget extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 50),
-            child: Container(
-              height: 185,
-              width: 140,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                      offset: Offset(0, 4),
-                      color: Color(0xFF393F3F).withOpacity(0.07),
-                      blurRadius: 40)
-                ],
-              ),
-              child: Center(
-                child: Text(
-                  text,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          InkWell(
+            onTap: () {
+              Get.toNamed(Routes.DETAIL_PRODUCT, arguments: {'id': id});
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: Container(
+                height: 185,
+                width: 140,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                        offset: Offset(0, 4),
+                        color: Color(0xFF393F3F).withOpacity(0.07),
+                        blurRadius: 40)
+                  ],
+                ),
+                child: Center(
+                  child: Text(
+                    text,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
             ),
